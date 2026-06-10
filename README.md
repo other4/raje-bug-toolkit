@@ -35,7 +35,7 @@
 
 ---
 
-![img1](image.png)
+![img1](image2.png)
 
 ---
 
