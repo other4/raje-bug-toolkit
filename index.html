@@ -266,12 +266,32 @@
         background: var(--surface);
         border-right: 1px solid var(--border);
         overflow-y: auto;
+        overflow-x: hidden;
       }
       .sidebar::-webkit-scrollbar {
-        width: 3px;
+        width: 4px;
       }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: var(--surface);
+        border-radius: 0;
+      }
+
       .sidebar::-webkit-scrollbar-thumb {
         background: var(--border);
+        border-radius: 2px;
+        transition: background 0.2s;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+        box-shadow: 0 0 6px rgba(0, 229, 160, 0.4);
+      }
+
+      /* Firefox */
+      .sidebar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) var(--surface);
       }
       .ovr-prog {
         padding: 14px 14px 10px;
@@ -320,6 +340,7 @@
         background: none;
         border: none;
         cursor: pointer;
+        box-sizing: border-box;
         color: var(--dim);
         font-family: var(--mono);
         font-size: 11px;
@@ -375,8 +396,25 @@
       .main::-webkit-scrollbar {
         width: 4px;
       }
+
+      .main::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+
       .main::-webkit-scrollbar-thumb {
         background: var(--border);
+        border-radius: 2px;
+      }
+
+      .main::-webkit-scrollbar-thumb:hover {
+        background: var(--accent2);
+        box-shadow: 0 0 6px rgba(0, 184, 255, 0.35);
+      }
+
+      /* Firefox */
+      .main {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) var(--bg);
       }
       .pp {
         display: none;
@@ -1489,7 +1527,7 @@
                 </a>
                 <a
                   class="pf-card"
-                  href="https://www.bugbounter.com/programs"
+                  href="https://app.bugbounter.com/programs"
                   target="_blank"
                   rel="noopener"
                 >
