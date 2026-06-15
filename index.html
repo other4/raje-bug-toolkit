@@ -1527,7 +1527,7 @@
                 </a>
                 <a
                   class="pf-card"
-                  href="https://app.bugbounter.com/programs"
+                  href="https://www.bugbounter.com/programs"
                   target="_blank"
                   rel="noopener"
                 >
@@ -7367,9 +7367,179 @@ echo "=== Recon Summary ==="
                 "
                 >Platform</label
               >
-              <select
-                id="modalPlatform"
-                style="
+              <style>
+                .mpd-wrap {
+                  position: relative;
+                  width: 100%;
+                  font-family: var(--mono);
+                }
+                .mpd-trigger {
+                  width: 100%;
+                  background: #080b0e;
+                  border: 1px solid var(--border);
+                  border-radius: 5px;
+                  color: var(--text);
+                  font-family: var(--mono);
+                  font-size: 12px;
+                  padding: 8px 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  gap: 8px;
+                  cursor: pointer;
+                  outline: none;
+                  transition: border-color 0.15s;
+                  box-sizing: border-box;
+                }
+                .mpd-trigger:hover,
+                .mpd-trigger.open {
+                  border-color: var(--accent2);
+                }
+                .mpd-trigger-content {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  min-width: 0;
+                }
+                .mpd-trigger-content .mpd-label {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+                .mpd-trigger-content .mpd-placeholder {
+                  color: var(--dim);
+                }
+                .mpd-chevron {
+                  color: var(--dim);
+                  font-size: 9px;
+                  flex-shrink: 0;
+                  transition: transform 0.15s;
+                }
+                .mpd-trigger.open .mpd-chevron {
+                  transform: rotate(180deg);
+                }
+
+                .mpd-menu {
+                  position: absolute;
+                  top: calc(100% + 4px);
+                  left: 0;
+                  right: 0;
+                  background: #080b0e;
+                  border: 1px solid var(--border);
+                  border-radius: 5px;
+                  max-height: 260px;
+                  overflow-y: auto;
+                  z-index: 410;
+                  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+                  display: none;
+
+                  /* Firefox thin scrollbar */
+                  scrollbar-width: thin;
+                  scrollbar-color: var(--border) #080b0e;
+                }
+                .mpd-menu.open {
+                  display: block;
+                }
+
+                /* Webkit thin scrollbar */
+                .mpd-menu::-webkit-scrollbar {
+                  width: 5px;
+                }
+                .mpd-menu::-webkit-scrollbar-track {
+                  background: #080b0e;
+                }
+                .mpd-menu::-webkit-scrollbar-thumb {
+                  background: var(--border);
+                  border-radius: 3px;
+                }
+                .mpd-menu::-webkit-scrollbar-thumb:hover {
+                  background: var(--accent2);
+                }
+
+                .mpd-search-wrap {
+                  position: sticky;
+                  top: 0;
+                  background: #080b0e;
+                  padding: 6px;
+                  border-bottom: 1px solid var(--border);
+                  z-index: 1;
+                }
+                .mpd-search {
+                  width: 100%;
+                  background: #0d1117;
+                  border: 1px solid var(--border);
+                  border-radius: 4px;
+                  color: var(--text);
+                  font-family: var(--mono);
+                  font-size: 11px;
+                  padding: 6px 8px;
+                  outline: none;
+                  box-sizing: border-box;
+                  transition: border-color 0.15s;
+                }
+                .mpd-search:focus {
+                  border-color: var(--accent2);
+                }
+                .mpd-search::placeholder {
+                  color: var(--dim);
+                }
+
+                .mpd-group-label {
+                  font-size: 9px;
+                  font-weight: 700;
+                  letter-spacing: 1px;
+                  text-transform: uppercase;
+                  color: var(--muted);
+                  padding: 8px 12px 4px;
+                }
+                .mpd-option {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 7px 12px;
+                  cursor: pointer;
+                  font-size: 12px;
+                  font-family: var(--mono);
+                  color: var(--text);
+                  transition: background 0.1s;
+                }
+                .mpd-option:hover,
+                .mpd-option.active {
+                  background: rgba(0, 184, 255, 0.08);
+                }
+                .mpd-option.placeholder {
+                  color: var(--dim);
+                }
+                .mpd-no-results {
+                  padding: 14px 12px;
+                  font-size: 11px;
+                  color: var(--dim);
+                  text-align: center;
+                  display: none;
+                }
+                .mpd-icon {
+                  width: 14px;
+                  height: 14px;
+                  border-radius: 3px;
+                  flex-shrink: 0;
+                  display: inline-block;
+                  object-fit: contain;
+                }
+                .mpd-icon-emoji {
+                  width: 14px;
+                  height: 14px;
+                  flex-shrink: 0;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 11px;
+                }
+                .mpd-icon-none {
+                  width: 14px;
+                  height: 14px;
+                  flex-shrink: 0;
+                }
+                .mpd-other-input {
                   width: 100%;
                   background: #080b0e;
                   border: 1px solid var(--border);
@@ -7379,18 +7549,314 @@ echo "=== Recon Summary ==="
                   font-size: 12px;
                   padding: 8px 12px;
                   outline: none;
-                "
-              >
-                <option value="">— select —</option>
-                <option value="HackerOne">HackerOne</option>
-                <option value="Bugcrowd">Bugcrowd</option>
-                <option value="Intigriti">Intigriti</option>
-                <option value="Synack">Synack</option>
-                <option value="YesWeHack">YesWeHack</option>
-                <option value="Private">Private Program</option>
-                <option value="Self-hosted">Self-hosted VDP</option>
-                <option value="Other">Other</option>
-              </select>
+                  margin-top: 8px;
+                  box-sizing: border-box;
+                  display: none;
+                  transition: border-color 0.15s;
+                }
+                .mpd-other-input:focus {
+                  border-color: var(--accent2);
+                }
+                .mpd-other-input.show {
+                  display: block;
+                }
+              </style>
+
+              <div class="mpd-wrap" id="modalPlatformDropdown">
+                <button
+                  type="button"
+                  class="mpd-trigger"
+                  id="modalPlatformTrigger"
+                >
+                  <span class="mpd-trigger-content">
+                    <span
+                      class="mpd-icon-none"
+                      id="modalPlatformTriggerIcon"
+                    ></span>
+                    <span
+                      class="mpd-label mpd-placeholder"
+                      id="modalPlatformTriggerLabel"
+                      >— select —</span
+                    >
+                  </span>
+                  <span class="mpd-chevron">▾</span>
+                </button>
+
+                <!-- Hidden field — keeps existing id so current JS keeps working -->
+                <input type="hidden" id="modalPlatform" value="" />
+
+                <div class="mpd-menu" id="modalPlatformMenu">
+                  <div class="mpd-search-wrap">
+                    <input
+                      type="text"
+                      class="mpd-search"
+                      id="modalPlatformSearch"
+                      placeholder="Search platforms..."
+                      autocomplete="off"
+                    />
+                  </div>
+
+                  <div
+                    class="mpd-option placeholder active"
+                    data-value=""
+                    data-label="— select —"
+                  >
+                    <span class="mpd-icon-none"></span>
+                    <span>— select —</span>
+                  </div>
+
+                  <div class="mpd-group-label">🌐 Global</div>
+                  <div
+                    class="mpd-option"
+                    data-value="HackerOne"
+                    data-label="HackerOne"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=hackerone.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🛡</span>
+                    <span>HackerOne</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="Bugcrowd"
+                    data-label="Bugcrowd"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=bugcrowd.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🐛</span>
+                    <span>Bugcrowd</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="Synack"
+                    data-label="Synack"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=synack.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🔒</span>
+                    <span>Synack</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="Cobalt"
+                    data-label="Cobalt"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=cobalt.io&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🎯</span>
+                    <span>Cobalt</span>
+                  </div>
+
+                  <div class="mpd-group-label">🚩 European</div>
+                  <div
+                    class="mpd-option"
+                    data-value="Intigriti"
+                    data-label="Intigriti"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=intigriti.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🔍</span>
+                    <span>Intigriti</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="YesWeHack"
+                    data-label="YesWeHack"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=yeswehack.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">☁️</span>
+                    <span>YesWeHack</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="OpenBugBounty"
+                    data-label="OpenBugBounty"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=openbugbounty.org&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🌐</span>
+                    <span>OpenBugBounty</span>
+                  </div>
+
+                  <div class="mpd-group-label">🇮🇳 India</div>
+                  <div
+                    class="mpd-option"
+                    data-value="BugBase"
+                    data-label="BugBase"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=bugbase.in&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🗄</span>
+                    <span>BugBase</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="Hacktify"
+                    data-label="Hacktify"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://hacktify.in/logo.png"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🛡</span>
+                    <span>Hacktify</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="BugBounter"
+                    data-label="BugBounter"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=bugbounter.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🐛</span>
+                    <span>BugBounter</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="SecurityBoat"
+                    data-label="SecurityBoat"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=securityboat.in&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">⚓</span>
+                    <span>SecurityBoat</span>
+                  </div>
+
+                  <div class="mpd-group-label">🏛️ Government / CERT</div>
+                  <div
+                    class="mpd-option"
+                    data-value="CERT-In"
+                    data-label="CERT-In"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=cert-in.org.in&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">🏢</span>
+                    <span>CERT-In</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="DoD/VDP"
+                    data-label="DoD / VDP"
+                  >
+                    <img
+                      class="mpd-icon"
+                      src="https://www.google.com/s2/favicons?domain=hackerone.com&sz=32"
+                      onerror="
+                        this.style.display = 'none';
+                        this.nextElementSibling.style.display = 'inline-flex';
+                      "
+                    />
+                    <span class="mpd-icon-emoji" style="display: none">⭐</span>
+                    <span>DoD / VDP</span>
+                  </div>
+
+                  <div class="mpd-group-label">Other</div>
+                  <div
+                    class="mpd-option"
+                    data-value="Private"
+                    data-label="Private Program"
+                  >
+                    <span class="mpd-icon-emoji">🔐</span>
+                    <span>Private Program</span>
+                  </div>
+                  <div
+                    class="mpd-option"
+                    data-value="Self-hosted"
+                    data-label="Self-hosted VDP"
+                  >
+                    <span class="mpd-icon-emoji">🏠</span>
+                    <span>Self-hosted VDP</span>
+                  </div>
+                  <div class="mpd-option" data-value="Other" data-label="Other">
+                    <span class="mpd-icon-emoji">➕</span>
+                    <span>Other</span>
+                  </div>
+
+                  <div class="mpd-no-results" id="modalPlatformNoResults">
+                    No platforms match your search
+                  </div>
+                </div>
+
+                <!-- Shown only when "Other" is selected -->
+                <input
+                  type="text"
+                  id="modalPlatformOther"
+                  class="mpd-other-input"
+                  placeholder="Enter program/platform name"
+                  autocomplete="off"
+                />
+              </div>
             </div>
             <div>
               <label
@@ -8152,12 +8618,179 @@ echo "=== Recon Summary ==="
           saveState({ openSections: Array.from(openSections) });
         }
 
-        // New Project
+        var wrap = document.getElementById('modalPlatformDropdown');
+        var trigger = document.getElementById('modalPlatformTrigger');
+        var menu = document.getElementById('modalPlatformMenu');
+        var hiddenInput = document.getElementById('modalPlatform');
+        var triggerLabel = document.getElementById('modalPlatformTriggerLabel');
+        var triggerIcon = document.getElementById('modalPlatformTriggerIcon');
+        var otherInput = document.getElementById('modalPlatformOther');
+        var searchInput = document.getElementById('modalPlatformSearch');
+        var noResults = document.getElementById('modalPlatformNoResults');
+        var searchWrap = searchInput.closest('.mpd-search-wrap');
+
+        function openMenu() {
+          menu.classList.add('open');
+          trigger.classList.add('open');
+          searchInput.value = '';
+          filterOptions('');
+          setTimeout(function () {
+            searchInput.focus();
+          }, 30);
+        }
+
+        function closeMenu() {
+          menu.classList.remove('open');
+          trigger.classList.remove('open');
+        }
+
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (menu.classList.contains('open')) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
+        // Filter options/groups based on search query
+        function filterOptions(query) {
+          query = query.trim().toLowerCase();
+          var children = Array.from(menu.children).filter(function (c) {
+            return c !== searchWrap && c !== noResults;
+          });
+
+          var currentGroup = null;
+          var groupHasMatch = false;
+          var anyVisible = false;
+
+          function finalizeGroup() {
+            if (currentGroup) {
+              currentGroup.style.display = groupHasMatch ? '' : 'none';
+            }
+          }
+
+          children.forEach(function (el) {
+            if (el.classList.contains('mpd-group-label')) {
+              finalizeGroup();
+              currentGroup = el;
+              groupHasMatch = false;
+              return;
+            }
+            if (el.classList.contains('mpd-option')) {
+              if (el.classList.contains('placeholder')) {
+                el.style.display = query ? 'none' : '';
+                return;
+              }
+              var label = (el.getAttribute('data-label') || '').toLowerCase();
+              var match = label.indexOf(query) !== -1;
+              el.style.display = match ? '' : 'none';
+              if (match) {
+                groupHasMatch = true;
+                anyVisible = true;
+              }
+            }
+          });
+          finalizeGroup();
+
+          noResults.style.display = anyVisible || !query ? 'none' : 'block';
+        }
+
+        searchInput.addEventListener('input', function () {
+          filterOptions(searchInput.value);
+        });
+        searchInput.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+        searchInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+          if (e.key === 'Escape') {
+            closeMenu();
+          }
+        });
+
+        menu.querySelectorAll('.mpd-option').forEach(function (opt) {
+          opt.addEventListener('click', function () {
+            menu.querySelectorAll('.mpd-option').forEach(function (o) {
+              o.classList.remove('active');
+            });
+            opt.classList.add('active');
+
+            var value = opt.getAttribute('data-value');
+            var label = opt.getAttribute('data-label');
+
+            hiddenInput.value = value;
+            triggerLabel.textContent = label;
+            triggerLabel.classList.toggle('mpd-placeholder', value === '');
+
+            var iconEl = opt.querySelector(
+              '.mpd-icon:not([style*="display: none"]), .mpd-icon-emoji:not([style*="display: none"])',
+            );
+            triggerIcon.innerHTML = '';
+            if (iconEl) {
+              var clone = iconEl.cloneNode(true);
+              clone.style.display = '';
+              triggerIcon.appendChild(clone);
+            } else {
+              triggerIcon.className = 'mpd-icon-none';
+            }
+
+            // Toggle "Other" text field
+            if (value === 'Other') {
+              otherInput.classList.add('show');
+              setTimeout(function () {
+                otherInput.focus();
+              }, 50);
+            } else {
+              otherInput.classList.remove('show');
+              otherInput.value = '';
+            }
+            closeMenu();
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!wrap.contains(e.target)) {
+            closeMenu();
+          }
+        });
+
+        // Expose a reset helper for the modal to call on open
+        window.resetModalPlatformDropdown = function () {
+          hiddenInput.value = '';
+          triggerLabel.textContent = '— select —';
+          triggerLabel.classList.add('mpd-placeholder');
+          triggerIcon.innerHTML = '';
+          triggerIcon.className = 'mpd-icon-none';
+          otherInput.classList.remove('show');
+          otherInput.value = '';
+          searchInput.value = '';
+          filterOptions('');
+          menu.querySelectorAll('.mpd-option').forEach(function (o) {
+            o.classList.remove('active');
+          });
+          menu
+            .querySelector('.mpd-option[data-value=""]')
+            .classList.add('active');
+        };
+
+        window.getSelectedPlatform = function () {
+          var val = hiddenInput.value;
+          if (val === 'Other') {
+            return otherInput.value.trim();
+          }
+          return val;
+        };
+
         function openNewProjectModal() {
           let modal = document.getElementById('newProjectModal');
           modal.style.display = 'flex';
           document.getElementById('modalTarget').value = '';
-          document.getElementById('modalPlatform').value = '';
+          if (typeof resetModalPlatformDropdown === 'function') {
+            resetModalPlatformDropdown();
+          }
           document.getElementById('modalSeverity').value = '';
           document.getElementById('modalNotes').value = '';
           document.getElementById('modalError').style.display = 'none';
@@ -8210,7 +8843,20 @@ echo "=== Recon Summary ==="
               projects[existingIdx].savedAt = new Date().toISOString();
             }
           }
-          let platform = document.getElementById('modalPlatform').value;
+          let platform =
+            typeof getSelectedPlatform === 'function'
+              ? getSelectedPlatform()
+              : document.getElementById('modalPlatform').value;
+
+          if (
+            document.getElementById('modalPlatform').value === 'Other' &&
+            !platform
+          ) {
+            errEl.textContent = 'Please enter a name for the platform.';
+            errEl.style.display = 'block';
+            document.getElementById('modalPlatformOther').focus();
+            return;
+          }
           let severity = document.getElementById('modalSeverity').value;
           let notes = document.getElementById('modalNotes').value.trim();
           projects.unshift({
