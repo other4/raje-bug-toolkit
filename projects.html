@@ -2087,6 +2087,7 @@
               {
                 value: 'CERT-In',
                 label: 'CERT-In',
+                favicon: 'https://www.cert-in.org.in/favicon.ico',
                 domain: 'cert-in.org.in',
                 emoji: '🏢',
               },
@@ -2465,7 +2466,6 @@
             return [];
           }
         }
-        console.log(JSON.parse(localStorage.getItem(LS_TOOLKIT)));
         function saveProjects(projects) {
           try {
             localStorage.setItem(
@@ -2681,7 +2681,37 @@
                   statusLabel(status) +
                   '</span>',
                 p.platform
-                  ? '<span>📋 <strong>' + esc(p.platform) + '</strong></span>'
+                  ? (function () {
+                      var item = findPlatformItem(p.platform);
+                      var iconHtml;
+                      if (item) {
+                        if (item.domain || item.favicon) {
+                          var src =
+                            item.favicon ||
+                            'https://www.google.com/s2/favicons?domain=' +
+                              item.domain +
+                              '&sz=32';
+                          iconHtml =
+                            '<img src="' +
+                            src +
+                            '" style="width:13px;height:13px;border-radius:2px;object-fit:contain;vertical-align:middle;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'inline\';" />' +
+                            '<span style="display:none;">' +
+                            item.emoji +
+                            '</span>';
+                        } else {
+                          iconHtml = '<span>' + item.emoji + '</span>';
+                        }
+                      } else {
+                        iconHtml = '<span>📋</span>';
+                      }
+                      return (
+                        '<span style="display:flex;align-items:center;gap:5px;">' +
+                        iconHtml +
+                        '<strong>' +
+                        esc(p.platform) +
+                        '</strong></span>'
+                      );
+                    })()
                   : '',
                 '      <span>Progress: <strong>' +
                   pp +
