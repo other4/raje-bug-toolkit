@@ -419,6 +419,7 @@
         display: flex;
         align-items: center;
         justify-items: center;
+        overflow: hidden;
         gap: 8px;
         animation: slideInLeft 0.5s var(--ease-out-quint) 0.1s both;
       }
@@ -2264,18 +2265,30 @@
   <body>
     <header>
       <div class="logo">
-        <img
-          src="roxoi16x16.ico"
-          height="32"
-          width="32"
-          alt="logo"
+        <div
           style="
-            object-fit: cover;
+            width: 32px;
+            height: 32px;
             border: 1px solid green;
             border-radius: 4px;
-            padding: 1px;
+            padding: 2px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           "
-        />
+        >
+          <img
+            src="roxoi16x16.png"
+            alt="logo"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transform: scale(1.5) translateY(1px);
+            "
+          />
+        </div>
         <div style="text-transform: uppercase">roxoi</div>
         <span class="divider">|</span>
         <span class="tagline">BugHunt Toolkit</span>
@@ -2593,18 +2606,30 @@
     >
       <div style="display: flex; align-items: center; gap: 8px">
         <div class="logo">
-          <img
-            src="roxoi16x16.ico"
-            height="32"
-            width="32"
-            alt="logo"
+          <div
             style="
-              object-fit: cover;
+              width: 32px;
+              height: 32px;
               border: 1px solid green;
               border-radius: 4px;
-              padding: 1px;
+              padding: 2px;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             "
-          />
+          >
+            <img
+              src="roxoi16x16.png"
+              alt="logo"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transform: scale(1.5) translateY(1px);
+              "
+            />
+          </div>
           <div style="text-transform: uppercase">roxoi</div>
         </div>
       </div>
