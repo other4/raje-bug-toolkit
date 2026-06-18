@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://other4.github.io/raje-bug-toolkit/sitemap.xml

@@ -4,7 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="roxoi16x16.ico" type="image/x-icon" />
-    <title>Projects | BugHunt Toolkit</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0a0c0f" />
+    <title>My Projects | Roxoi BugHunt Toolkit</title>
+    <meta
+      name="description"
+      content="Manage and track your bug bounty projects, targets, and findings with Roxoi BugHunt Toolkit by Rajendra Pancholi."
+    />
+    <meta name="google-site-verification" content="PASTE_YOUR_CODE_HERE" />
+    <link
+      rel="canonical"
+      href="https://other4.github.io/raje-bug-toolkit/projects.html"
+    />
+    <meta
+      property="og:url"
+      content="https://other4.github.io/raje-bug-toolkit/projects.html"
+    />
+    <meta property="og:title" content="My Projects | Roxoi BugHunt Toolkit" />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap');
       :root {
@@ -2462,7 +2478,7 @@
           <textarea
             id="newNotes"
             rows="4"
-            style="resize: vertical;"
+            style="resize: vertical"
             placeholder="Scope, bounty range, initial recon notes..."
           ></textarea>
         </div>
@@ -4182,7 +4198,7 @@
             return;
           }
 
-          showToast('Loading ' + p.target + '…');
+          showToast('Loading ' + p.target + '...');
           setTimeout(function () {
             window.location.href = '/raje-bug-toolkit/';
           }, 700);

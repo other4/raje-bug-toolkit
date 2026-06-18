@@ -4,7 +4,83 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="roxoi16x16.ico" type="image/x-icon" />
-    <title>BugHunt Toolkit</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0a0c0f" />
+    <title>
+      Roxoi BugHunt Toolkit | Bug Bounty Checklist & Recon Tool by Rajendra
+      Pancholi
+    </title>
+    <meta
+      name="description"
+      content="Roxoi BugHunt Toolkit is a free, offline-first bug bounty checklist and vulnerability testing tracker built by Rajendra Pancholi (Roxoi). Covers recon, subdomain enumeration, XSS, SQLi, SSRF, IDOR, auth bypass, API testing, business logic flaws, and 200+ security checks for ethical hackers, penetration testers, and bug bounty hunters."
+    />
+    <meta
+      name="keywords"
+      content="roxoi, roxoi bughunt toolkit, rajendra pancholi, bug bounty checklist, bug hunting tool, penetration testing checklist, web security testing, vulnerability assessment tool, OWASP checklist, XSS testing, SQL injection checklist, SSRF testing, IDOR checklist, recon tool bug bounty, security researcher tool, ethical hacking checklist, ctf toolkit, hackerone toolkit, bugcrowd checklist, ai bug bounty assistant"
+    />
+    <meta
+      name="google-site-verification"
+      content="zEgCok_ViYNk6-YXUJvNUbZt18bvmiqdzXu2FLbu0Oo"
+    />
+    <meta name="author" content="Rajendra Pancholi (Roxoi)" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://other4.github.io/raje-bug-toolkit/" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://other4.github.io/raje-bug-toolkit/"
+    />
+    <meta
+      property="og:title"
+      content="Roxoi BugHunt Toolkit | Bug Bounty Checklist Tool"
+    />
+    <meta
+      property="og:description"
+      content="A complete bug bounty testing checklist and tracker by Rajendra Pancholi (Roxoi) — recon, web app vulns, API testing, and project management for security researchers."
+    />
+    <meta
+      property="og:image"
+      content="https://other4.github.io/raje-bug-toolkit/image.png"
+    />
+    <meta property="og:site_name" content="Roxoi BugHunt Toolkit" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Roxoi BugHunt Toolkit" />
+    <meta
+      name="twitter:description"
+      content="Bug bounty checklist & recon toolkit by Rajendra Pancholi (Roxoi)."
+    />
+    <meta
+      name="twitter:image"
+      content="https://other4.github.io/raje-bug-toolkit/image.png"
+    />
+
+    <!-- Structured data for Google rich results -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Roxoi BugHunt Toolkit",
+        "alternateName": "BugHunt Toolkit",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Any",
+        "author": {
+          "@type": "Person",
+          "name": "Rajendra Pancholi",
+          "alternateName": "Roxoi"
+        },
+        "description": "Free bug bounty checklist and vulnerability testing toolkit covering recon, XSS, SQLi, SSRF, IDOR, auth, and API security checks.",
+        "url": "https://other4.github.io/raje-bug-toolkit/",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap');
       :root {
@@ -197,6 +273,14 @@
           );
         background-size: 40px 40px;
       }
+      @keyframes shimmer2 {
+        0% {
+          background-position: 150% 0;
+        }
+        100% {
+          background-position: -50% 0;
+        }
+      }
 
       header {
         background: var(--surface);
@@ -214,28 +298,44 @@
         --progress: 0px;
         /* overflow: hidden; */
       }
-      /* moving shimmer line along header bottom */
+
       header::after {
         content: '';
         position: absolute;
         left: 0;
-        right: 0;
         bottom: 0;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        width: var(--progress);
+        top: 0;
+        z-index: 50;
+        width: 50%;
         height: 100%;
+        border-radius: 0 8px 8px 0;
+
         background: linear-gradient(
           90deg,
-          transparent,
-          rgba(0, 229, 160, 0.15),
-          transparent
+          rgba(0, 229, 160, 0.08),
+          rgba(0, 229, 160, 0.15) 75%,
+          rgba(0, 229, 160, 0.3) 95%,
+          #00d37f19 100%
         );
-        background-size: 600px 1px;
-        animation: shimmer 8s linear infinite;
-        transition: height 0.4s var(--ease-out-quint);
+        background-size: 200% 100%;
+        animation: shimmer2 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        transition:
+          width 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 0.3s ease,
+          box-shadow 0.3s ease;
+
+        filter: brightness(1) saturate(1);
+        will-change: width, filter;
       }
 
+      header:hover::after {
+        border-radius: 0 8px 8px 0;
+        filter: brightness(1.4) saturate(1.2);
+        box-shadow:
+          0 0 30px rgba(0, 229, 160, 0.4),
+          0 0 60px rgba(0, 191, 229, 0.2);
+      }
+      
       [tooltip] {
         position: relative;
         cursor: pointer;
@@ -526,8 +626,7 @@
         font-size: 9px;
         font-weight: 700;
         flex-shrink: 0;
-        transition:
-          transform 0.15s var(--ease-spring);
+        transition: transform 0.15s var(--ease-spring);
       }
       .pb:hover .pnum {
         transform: scale(1.1);
@@ -1676,11 +1775,17 @@
     <div class="layout">
       <div class="sidebar">
         <div class="ovr-prog">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
             <span class="ovr-label">Progress</span>
             <span class="ovr-pct" id="oPct">0%</span>
           </div>
-          <div class="ovr-track" >
+          <div class="ovr-track">
             <div class="ovr-fill" id="oFill" style="width: 0%"></div>
           </div>
         </div>
@@ -1750,10 +1855,7 @@
           PortSwigger Labs
         </button>
 
-        <button
-          class="pb sbanimated-btn"
-          data-phase="15"
-        >
+        <button class="pb sbanimated-btn" data-phase="15">
           <svg
             class="btn-icon download-icon"
             style="--icon-color: var(--accent2)"
@@ -14202,7 +14304,7 @@ echo "=== Recon Summary ==="
           document.getElementById('oPct').textContent = pct + '%';
           document.getElementById('gPct').textContent = pct + '%';
           document.getElementById('gChecks').textContent =
-          done + ' / ' + all + ' checks';
+            done + ' / ' + all + ' checks';
         }
 
         // Copy buttons

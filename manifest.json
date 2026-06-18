@@ -1,0 +1,32 @@
+{
+  "name": "Roxoi BugHunt Toolkit",
+  "short_name": "BugHunt Toolkit",
+  "description": "Bug bounty checklist and recon toolkit by Rajendra Pancholi (Roxoi). Track targets, run through 200+ security checks, and manage your bug bounty projects.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0c0f",
+  "theme_color": "#0a0c0f",
+  "lang": "en",
+  "categories": ["security", "developer", "productivity"],
+  "icons": [
+    {
+      "src": "roxoi16x16.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "roxoi16x16.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "roxoi16x16.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
