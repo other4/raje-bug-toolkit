@@ -3514,7 +3514,10 @@ httpx -l all_subs.txt \
 
 sed -e 's|^[^/]*//||' -e 's|/.*||' live_subs.txt > clean_subs.txt
 naabu -list clean_subs.txt -c 50 -o naabu_ports.txt
-nmap -sV -sC -iL naabu_ports.txt -oN nmap_scan.txt</pre
+
+awk -F':' '{print $1}' naabu_ports.txt | sort -u > clean_hosts.txt
+ports=$(awk -F':' '{print $2}' naabu_ports.txt | sort -u | paste -sd, -)
+nmap -sV -sC -p $ports -iL clean_hosts.txt -oN nmap_scan.txt</pre
                 >
               </div>
             </div>
