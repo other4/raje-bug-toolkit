@@ -3770,7 +3770,9 @@
                     : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="display: inline-block; vertical-align: middle; margin-right: 8px;"><polygon class="anim-play" points="5 3 19 12 5 21 5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/> </svg>`) +
                   '</button>',
                 '    <button tooltip="' +
-                  (p.manualCompleted ? 'Mark to Incomplete' : 'Mark to Complete') +
+                  (p.manualCompleted
+                    ? 'Mark to Incomplete'
+                    : 'Mark to Complete') +
                   '" class="act-btn mark-complete' +
                   (p.manualCompleted ? ' done' : '') +
                   '" data-action="toggle-complete" data-idx="' +
@@ -4270,7 +4272,11 @@
           p.manualCompleted = !p.manualCompleted;
           saveProjects(projects);
           render();
-          showToast(p.manualCompleted ? p.target + ' marked complete' : p.target + ' reopened');
+          showToast(
+            p.manualCompleted
+              ? p.target + ' marked complete'
+              : p.target + ' reopened',
+          );
         }
 
         function deleteProject(idx) {
