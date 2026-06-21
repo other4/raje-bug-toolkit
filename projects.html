@@ -3896,17 +3896,16 @@
           .addEventListener('click', function () {
             if (deleteTargetIdx === null) return;
             var projects = loadProjects();
-            var p = projects[deleteTargetIdx]; // FIXED: was projects[idx]
+            var p = projects[deleteTargetIdx];
             if (!p) return;
 
             projects.splice(deleteTargetIdx, 1);
             saveProjects(projects);
 
-            // Tombstone — prevents toolkit from re-syncing this target back
             try {
               var tombstones = JSON.parse(
                 localStorage.getItem('bbh_deleted_targets') || '[]',
-              ); // FIXED: was DL_PROJECTS
+              );
               if (!tombstones.includes(p.target.trim().toLowerCase())) {
                 tombstones.push(p.target.trim().toLowerCase());
                 localStorage.setItem(
@@ -3922,7 +3921,7 @@
             try {
               var toolkitState = JSON.parse(
                 localStorage.getItem('bbh_toolkit_state') || '{}',
-              ); // FIXED: was LS_TOOLKIT constant
+              );
               if (
                 (toolkitState.target || '').trim().toLowerCase() ===
                 p.target.trim().toLowerCase()
@@ -4544,8 +4543,6 @@
               );
             });
             if (!exists) {
-              // Only auto-import if the toolkit session was NOT manually deleted.
-              // Check a deletion tombstone list to avoid resurrection.
               let tombstones = JSON.parse(
                 localStorage.getItem(DL_PROJECTS) || '[]',
               );
